@@ -31,6 +31,11 @@ navLinks.forEach(link => {
     link.classList.add("active");
     const id = link.getAttribute("href").replace("#", "");
     document.getElementById(id).classList.remove("hidden");
+    
+    // Load bookings when bookings section is accessed
+    if (id === 'bookings') {
+      loadBookings();
+    }
   });
 });
 
@@ -208,14 +213,73 @@ let bunkData = null;
 
 // Show Bookings
 async function loadBookings() {
-  const bookingSnap = await getDocs(collection(db, "bookings"));
-  const table = document.querySelector("#booking-table tbody");
-  table.innerHTML = "";
-  bookingSnap.forEach(doc => {
-    const b = doc.data();
-    const row = `<tr><td>${b.name}</td><td>${b.phone}</td><td>${b.vehicle}</td><td>${b.time}</td><td>${b.charger}</td></tr>`;
-    table.innerHTML += row;
-  });
+  try {
+    const bookingSnap = await getDocs(collection(db, "bookings"));
+    const table = document.querySelector("#booking-table tbody");
+    table.innerHTML = "";
+    
+    if (bookingSnap.empty) {
+      table.innerHTML = '<tr><td colspan="10" style="text-align: center; padding: 40px; color: #6c757d;">No bookings found</td></tr>';
+      updateBookingStats(0, 0);
+      return;
+    }
+
+    let totalBookings = 0;
+    let todayBookings = 0;
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const tomorrow = new Date(today);
+    tomorrow.setDate(today.getDate() + 1);
+
+    bookingSnap.forEach(doc => {
+      const booking = doc.data();
+      totalBookings++;
+
+      // Check if booking is for today
+      const bookingDate = booking.date?.toDate() || new Date(booking.createdAt?.toDate() || Date.now());
+      if (bookingDate >= today && bookingDate < tomorrow) {
+        todayBookings++;
+      }
+
+      // Format the date
+      const formattedDate = bookingDate.toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric'
+      });
+
+      // Create table row
+      const row = `
+        <tr>
+          <td><strong>${booking.bookingId || doc.id}</strong></td>
+          <td>${booking.userName || booking.name || 'N/A'}</td>
+          <td>${booking.userEmail || booking.email || 'N/A'}</td>
+          <td>${booking.phone || 'N/A'}</td>
+          <td>${booking.stationName || 'N/A'}</td>
+          <td>${booking.timeDisplay || booking.timeSlot + ':00' || 'N/A'}</td>
+          <td>${booking.chargingPoint || 'N/A'}</td>
+          <td>₹${booking.price || '0'}</td>
+          <td><span class="status ${booking.status || 'confirmed'}">${(booking.status || 'confirmed').toUpperCase()}</span></td>
+          <td>${formattedDate}</td>
+        </tr>
+      `;
+      table.innerHTML += row;
+    });
+
+    updateBookingStats(totalBookings, todayBookings);
+  } catch (error) {
+    console.error("Error loading bookings:", error);
+    const table = document.querySelector("#booking-table tbody");
+    table.innerHTML = '<tr><td colspan="10" style="text-align: center; padding: 40px; color: #dc3545;">Error loading bookings. Please try again.</td></tr>';
+  }
+}
+
+function updateBookingStats(total, today) {
+  const totalElement = document.getElementById('total-bookings-display');
+  const todayElement = document.getElementById('today-bookings');
+  
+  if (totalElement) totalElement.textContent = total;
+  if (todayElement) todayElement.textContent = today;
 }
 
 loadBookings();

@@ -7,6 +7,8 @@ import {
   getDoc,
   doc,
   addDoc,
+  setDoc,
+  updateDoc,
   Timestamp
 } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
 import {
@@ -28,6 +30,11 @@ const slotGrid = document.getElementById("slot-grid");
 const bookingPanel = document.getElementById("booking-panel");
 const bookingList = document.getElementById("booking-list");
 const userProfile = document.getElementById("user-profile");
+const editProfileBtn = document.getElementById("edit-profile-btn");
+const editProfileForm = document.getElementById("edit-profile-form");
+const profileForm = document.getElementById("profile-form");
+const cancelEditBtn = document.getElementById("cancel-edit-btn");
+const cancelFormBtn = document.getElementById("cancel-form-btn");
 
 function showSection(section) {
   [searchSection, bookingsSection, profileSection].forEach(s => s.classList.add("hidden"));
@@ -53,6 +60,23 @@ navLinks.forEach(link => {
     }
   });
 });
+
+// Profile editing event listeners
+if (editProfileBtn) {
+  editProfileBtn.addEventListener("click", showEditForm);
+}
+
+if (cancelEditBtn) {
+  cancelEditBtn.addEventListener("click", hideEditForm);
+}
+
+if (cancelFormBtn) {
+  cancelFormBtn.addEventListener("click", hideEditForm);
+}
+
+if (profileForm) {
+  profileForm.addEventListener("submit", saveProfile);
+}
 
 function initMap() {
   const defaultLocation = { lat: 20.5937, lng: 78.9629 };
@@ -449,6 +473,8 @@ function loadUserProfile() {
             <p><strong>Name:</strong> ${d.name || currentUser.displayName || 'N/A'}</p>
             <p><strong>Email:</strong> ${d.email || currentUser.email}</p>
             <p><strong>Phone:</strong> ${d.phone || currentUser.phoneNumber || 'N/A'}</p>
+            <p><strong>Address:</strong> ${d.address || 'N/A'}</p>
+            <p><strong>Vehicle:</strong> ${d.vehicle || 'N/A'}</p>
           </div>
         `;
       } else {
@@ -458,6 +484,8 @@ function loadUserProfile() {
             <p><strong>Name:</strong> ${currentUser.displayName || 'N/A'}</p>
             <p><strong>Email:</strong> ${currentUser.email}</p>
             <p><strong>Phone:</strong> ${currentUser.phoneNumber || 'N/A'}</p>
+            <p><strong>Address:</strong> N/A</p>
+            <p><strong>Vehicle:</strong> N/A</p>
           </div>
         `;
       }
@@ -466,6 +494,82 @@ function loadUserProfile() {
       console.error("Error loading profile:", error);
       userProfile.innerHTML = "<div class='error'>Error loading profile.</div>";
     });
+}
+
+function showEditForm() {
+  if (!currentUser) return;
+  
+  // Hide profile display and show edit form
+  userProfile.classList.add("hidden");
+  editProfileForm.classList.remove("hidden");
+  
+  // Load current user data into form
+  getDoc(doc(db, "users", currentUser.uid))
+    .then(docSnap => {
+      const data = docSnap.exists() ? docSnap.data() : {};
+      
+      document.getElementById("edit-name").value = data.name || currentUser.displayName || '';
+      document.getElementById("edit-email").value = data.email || currentUser.email || '';
+      document.getElementById("edit-phone").value = data.phone || currentUser.phoneNumber || '';
+      document.getElementById("edit-address").value = data.address || '';
+      document.getElementById("edit-vehicle").value = data.vehicle || '';
+    })
+    .catch(error => {
+      console.error("Error loading profile for editing:", error);
+      alert("Error loading profile data");
+    });
+}
+
+function hideEditForm() {
+  userProfile.classList.remove("hidden");
+  editProfileForm.classList.add("hidden");
+  
+  // Clear form
+  if (profileForm) {
+    profileForm.reset();
+  }
+}
+
+async function saveProfile(event) {
+  event.preventDefault();
+  
+  if (!currentUser) {
+    alert("Please login to update profile");
+    return;
+  }
+  
+  const formData = new FormData(profileForm);
+  const userData = {
+    name: formData.get('name'),
+    email: formData.get('email'),
+    phone: formData.get('phone'),
+    address: formData.get('address'),
+    vehicle: formData.get('vehicle'),
+    updatedAt: Timestamp.now()
+  };
+  
+  try {
+    // Show loading state
+    const saveBtn = document.querySelector('.save-btn');
+    const originalText = saveBtn.textContent;
+    saveBtn.textContent = 'Saving...';
+    saveBtn.disabled = true;
+    
+    await setDoc(doc(db, "users", currentUser.uid), userData, { merge: true });
+    
+    alert("Profile updated successfully!");
+    hideEditForm();
+    loadUserProfile(); // Reload profile display
+    
+  } catch (error) {
+    console.error("Error updating profile:", error);
+    alert("Error updating profile. Please try again.");
+  } finally {
+    // Reset button state
+    const saveBtn = document.querySelector('.save-btn');
+    saveBtn.textContent = 'Save Changes';
+    saveBtn.disabled = false;
+  }
 }
 
 onAuthStateChanged(auth, user => {

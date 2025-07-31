@@ -147,10 +147,17 @@ body {
 
 /* Search Section Styles */
 .search-container {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  height: calc(100vh - 200px);
+}
+
+.map-section {
   display: grid;
   grid-template-columns: 2fr 1fr;
   gap: 25px;
-  height: calc(100vh - 200px);
+  flex: 1;
 }
 
 .map-container {
@@ -265,8 +272,24 @@ body {
   border-radius: 15px;
   padding: 25px;
   box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-  max-height: 600px;
-  overflow-y: auto;
+  margin-top: 10px;
+  width: 100%;
+}
+
+.booking-panel:not(.hidden) {
+  display: block;
+  animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .panel-header {
@@ -306,42 +329,75 @@ body {
 }
 
 /* Slot Selection */
+.slot-selection {
+  background: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 12px;
+  padding: 20px;
+  margin: 15px 0;
+  min-height: 200px;
+  position: relative;
+}
+
+.slot-selection:empty::before {
+  content: "Loading available time slots...";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #6c757d;
+  font-style: italic;
+  font-size: 1.1rem;
+}
+
 .slot-selection h4 {
   color: #2c3e50;
   margin-bottom: 15px;
-  font-size: 1.1rem;
+  font-size: 1.2rem;
+  font-weight: 600;
+  text-align: center;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #37e937;
 }
 
 .price-info {
   background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
-  padding: 12px 15px;
-  border-radius: 8px;
+  padding: 15px 20px;
+  border-radius: 10px;
   margin: 15px 0;
   color: #1565c0;
   font-weight: 600;
-  font-size: 0.9rem;
+  font-size: 1rem;
   border-left: 4px solid #2196f3;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(33, 150, 243, 0.1);
 }
 
 .slots-container {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 8px;
+  gap: 10px;
   margin: 20px 0;
-  max-height: 250px;
+  max-height: 300px;
   overflow-y: auto;
+  padding: 10px;
+  background: white;
+  border-radius: 8px;
+  border: 1px solid #e9ecef;
 }
 
 .time-slot {
   border: 2px solid #e9ecef;
-  border-radius: 10px;
-  padding: 12px 15px;
+  border-radius: 12px;
+  padding: 15px 20px;
   cursor: pointer;
   transition: all 0.3s ease;
   background: white;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  min-height: 60px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }
 
 .time-slot.available {
@@ -351,16 +407,17 @@ body {
 
 .time-slot.available:hover {
   background: linear-gradient(135deg, #e8f5e8 0%, #d4edda 100%);
-  transform: translateX(5px);
-  box-shadow: 0 3px 10px rgba(40, 167, 69, 0.2);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(40, 167, 69, 0.2);
+  border-color: #20c997;
 }
 
 .time-slot.selected {
   background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
   border-color: #28a745;
   color: white;
-  transform: translateX(5px);
-  box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(40, 167, 69, 0.3);
 }
 
 .time-slot.booked {
@@ -368,80 +425,118 @@ body {
   border-color: #dc3545;
   color: #721c24;
   cursor: not-allowed;
-  opacity: 0.7;
+  opacity: 0.8;
 }
 
 .time-slot .time {
-  font-weight: 600;
-  font-size: 0.95rem;
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: inherit;
 }
 
 .time-slot .status {
-  font-size: 0.8rem;
+  font-size: 0.9rem;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
-  font-weight: 500;
+  letter-spacing: 0.8px;
+  font-weight: 600;
+  padding: 4px 8px;
+  border-radius: 6px;
+  background: rgba(255,255,255,0.2);
+}
+
+.time-slot.available .status {
+  background: rgba(40, 167, 69, 0.1);
+  color: #28a745;
+}
+
+.time-slot.booked .status {
+  background: rgba(220, 53, 69, 0.1);
+  color: #dc3545;
 }
 
 /* Booking Summary */
 .booking-summary {
   background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%);
-  border: 1px solid #ffeaa7;
-  border-radius: 10px;
-  padding: 15px;
+  border: 2px solid #37e937;
+  border-radius: 12px;
+  padding: 20px;
   margin: 20px 0;
-  border-left: 4px solid #ffc107;
+  box-shadow: 0 4px 12px rgba(55, 233, 55, 0.15);
+  text-align: center;
 }
 
 .booking-summary p {
-  margin: 6px 0;
-  font-weight: 600;
-  color: #856404;
+  margin: 8px 0;
+  font-weight: 700;
+  color: #2c3e50;
+  font-size: 1.1rem;
+}
+
+.booking-summary #selected-count {
+  color: #28a745;
+  font-size: 1.3rem;
+}
+
+.booking-summary #total-price {
+  color: #007bff;
+  font-size: 1.3rem;
 }
 
 /* Booking Actions */
 .booking-actions {
   display: flex;
-  gap: 10px;
-  margin-top: 20px;
+  gap: 12px;
+  margin-top: 25px;
+  justify-content: center;
 }
 
 .confirm-btn {
-  background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+  background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
   color: white;
   border: none;
-  padding: 12px 20px;
-  border-radius: 8px;
-  font-size: 1rem;
-  font-weight: 600;
+  padding: 15px 30px;
+  border-radius: 10px;
+  font-size: 1.1rem;
+  font-weight: 700;
   cursor: pointer;
   flex: 2;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3);
+  box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .confirm-btn:hover {
-  background: linear-gradient(135deg, #0056b3 0%, #004085 100%);
+  background: linear-gradient(135deg, #218838 0%, #1e7e34 100%);
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(0, 123, 255, 0.4);
+  box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
+}
+
+.confirm-btn:disabled {
+  background: #6c757d;
+  cursor: not-allowed;
+  opacity: 0.6;
 }
 
 .cancel-btn {
-  background: #6c757d;
+  background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
   color: white;
   border: none;
-  padding: 12px 20px;
-  border-radius: 8px;
+  padding: 15px 25px;
+  border-radius: 10px;
   font-size: 1rem;
-  font-weight: 500;
+  font-weight: 600;
   cursor: pointer;
   flex: 1;
   transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .cancel-btn:hover {
-  background: #5a6268;
+  background: linear-gradient(135deg, #5a6268 0%, #343a40 100%);
   transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(108, 117, 125, 0.3);
 }
 
 /* Bookings Section */
@@ -591,6 +686,127 @@ body {
 
 .profile-info p:last-child {
   border-bottom: none;
+}
+
+/* Edit Profile Form */
+.edit-form {
+  background: white;
+  border-radius: 12px;
+  padding: 25px;
+  box-shadow: 0 3px 15px rgba(0,0,0,0.08);
+  margin-top: 20px;
+  border: 1px solid #dee2e6;
+}
+
+.form-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+  padding-bottom: 15px;
+  border-bottom: 2px solid #007bff;
+}
+
+.form-header h3 {
+  margin: 0;
+  color: #2c3e50;
+  font-size: 1.3rem;
+}
+
+.cancel-edit-btn {
+  background: #6c757d;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background 0.3s ease;
+}
+
+.cancel-edit-btn:hover {
+  background: #5a6268;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #495057;
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 12px 15px;
+  border: 2px solid #e9ecef;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+}
+
+.form-group input[readonly] {
+  background-color: #f8f9fa;
+  cursor: not-allowed;
+}
+
+.form-group textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.form-actions {
+  display: flex;
+  gap: 15px;
+  justify-content: flex-end;
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid #e9ecef;
+}
+
+.save-btn {
+  background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 10px rgba(40, 167, 69, 0.3);
+}
+
+.save-btn:hover {
+  background: linear-gradient(135deg, #218838 0%, #1ea885 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(40, 167, 69, 0.4);
+}
+
+.cancel-btn {
+  background: #6c757d;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background 0.3s ease;
+}
+
+.cancel-btn:hover {
+  background: #5a6268;
 }
 
 /* Loading and Error States */

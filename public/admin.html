@@ -15,12 +15,26 @@
         <h2 class="company-name">EV Point</h2>
       </div>
       <nav class="sidebar-nav">
-        <a href="#dashboard" class="active">Dashboard</a>
-        <a href="#manage">Manage Bunks</a>
-        <a href="#manage-slots">Manage Slots</a>
-        <a href="#bookings">Bookings</a>
-        <a href="#reports">Reports</a>
-        <a href="#" id="logout">Logout</a>
+        <a href="#dashboard" class="active">
+          <span class="nav-icon">📊</span>
+          Dashboard
+        </a>
+        <a href="#manage">
+          <span class="nav-icon">⚙️</span>
+          Manage Bunks
+        </a>
+        <a href="#manage-slots">
+          <span class="nav-icon">🕒</span>
+          Manage Slots
+        </a>
+        <a href="#bookings">
+          <span class="nav-icon">📋</span>
+          Bookings
+        </a>
+        <a href="#" id="logout">
+          <span class="nav-icon">🚪</span>
+          Logout
+        </a>
       </nav>
     </aside>
 
@@ -81,27 +95,36 @@
 
 
       <section id="bookings" class="content-section hidden">
+        <div class="section-header">
+          <h2>User Bookings</h2>
+          <div class="booking-stats">
+            <div class="stat-item">
+              <span class="stat-number" id="total-bookings-display">0</span>
+              <span class="stat-label">Total Bookings</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-number" id="today-bookings">0</span>
+              <span class="stat-label">Today's Bookings</span>
+            </div>
+          </div>
+        </div>
         <table id="booking-table">
           <thead>
             <tr>
-              <th>Name</th>
+              <th>Booking ID</th>
+              <th>User Name</th>
+              <th>Email</th>
               <th>Phone</th>
-              <th>Vehicle</th>
-              <th>Time Period</th>
-              <th>Charger Type</th>
+              <th>Station Name</th>
+              <th>Time Slot</th>
+              <th>Charging Point</th>
+              <th>Price</th>
+              <th>Status</th>
+              <th>Date</th>
             </tr>
           </thead>
           <tbody></tbody>
         </table>
-      </section>
-
-      <section id="reports" class="content-section hidden">
-        <div class="card">
-          <h3 id="total-revenue">$0</h3><p>Total Revenue</p>
-          <input type="date" id="from-date" />
-          <input type="date" id="to-date" />
-          <button id="filter-revenue">Filter</button>
-        </div>
       </section>
 
     </main>

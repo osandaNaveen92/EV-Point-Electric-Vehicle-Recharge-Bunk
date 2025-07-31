@@ -6,7 +6,6 @@
     <title>Register - EV Point</title>
     <link rel="stylesheet" href="css/login.css">
     <script type="module" src="js/firebase-config.js"></script>
-
 </head>
 <body>
     <div class="login-container">
@@ -16,16 +15,54 @@
         </div>
         <form id="register-form" class="login-form">
             <h2>Create Your Account</h2>
-            <input type="text" id="name" placeholder="Enter your name" required>
-            <input type="email" id="email" placeholder="Enter your email" required>
-            <input type="text" id="phone" placeholder="Enter your phone number" required>
-            <select id="role" required>
-                <option value="user">User</option>
-                <option value="admin">Admin</option>
-            </select>
-            <input type="password" id="password" placeholder="Enter your password" required>
-            <button type="submit">Register</button>
-            <p id="error-message"></p>
+            
+            <div class="form-group">
+                <label for="name">Full Name</label>
+                <input type="text" id="name" name="name" placeholder="Enter your full name" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" name="email" placeholder="Enter your email" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="phone">Phone Number</label>
+                <input type="tel" id="phone" name="phone" placeholder="Enter your phone number" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="address">Address</label>
+                <textarea id="address" name="address" placeholder="Enter your address" rows="3"></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label for="vehicle">Vehicle Model</label>
+                <input type="text" id="vehicle" name="vehicle" placeholder="e.g., Tesla Model 3, Nissan Leaf">
+            </div>
+            
+            <div class="form-group">
+                <label for="role">Account Type</label>
+                <select id="role" name="role" required>
+                    <option value="">Select account type</option>
+                    <option value="user">User</option>
+                    <option value="admin">Admin</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" placeholder="Enter your password" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="confirm-password">Confirm Password</label>
+                <input type="password" id="confirm-password" name="confirm-password" placeholder="Confirm your password" required>
+            </div>
+            
+            <button type="submit">Create Account</button>
+            <div id="error-message"></div>
+            <div id="success-message" class="success-message" style="display: none;"></div>
             <p>Already have an account? <a href="login.html">Login here</a></p>
         </form>
     </div>

@@ -45,41 +45,43 @@
       <!-- Search Station Section -->
       <div class="content-section" id="search-section">
         <div class="search-container">
-          <div class="map-container">
-            <div id="map" class="map-box"></div>
-            <div class="map-legend">
-              <div class="legend-item">
-                <span class="legend-dot green"></span>
-                <span>Open Stations</span>
+          <div class="map-section">
+            <div class="map-container">
+              <div id="map" class="map-box"></div>
+              <div class="map-legend">
+                <div class="legend-item">
+                  <span class="legend-dot green"></span>
+                  <span>Open Stations</span>
+                </div>
+                <div class="legend-item">
+                  <span class="legend-dot red"></span>
+                  <span>Closed Stations</span>
+                </div>
+                <div class="legend-item">
+                  <span class="legend-dot blue"></span>
+                  <span>Your Location</span>
+                </div>
               </div>
-              <div class="legend-item">
-                <span class="legend-dot red"></span>
-                <span>Closed Stations</span>
-              </div>
-              <div class="legend-item">
-                <span class="legend-dot blue"></span>
-                <span>Your Location</span>
+            </div>
+            
+            <div class="details-panel">
+              <div id="station-details" class="station-card hidden">
+                <!-- Station details will be populated by JavaScript -->
               </div>
             </div>
           </div>
           
-          <div class="details-panel">
-            <div id="station-details" class="station-card hidden">
-              <!-- Station details will be populated by JavaScript -->
+          <div id="booking-panel" class="booking-panel hidden">
+            <div class="panel-header">
+              <h3>Book Your Charging Slot</h3>
+              <button class="close-panel" onclick="closeBookingPanel()">×</button>
             </div>
-            
-            <div id="booking-panel" class="booking-panel hidden">
-              <div class="panel-header">
-                <h3>Book Your Charging Slot</h3>
-                <button class="close-panel" onclick="closeBookingPanel()">×</button>
-              </div>
-              <div id="slot-grid" class="slot-selection">
-                <!-- Slot grid will be populated by JavaScript -->
-              </div>
-              <div class="booking-actions">
-                <button id="confirm-booking" class="confirm-btn">Confirm Booking</button>
-                <button class="cancel-btn" onclick="closeBookingPanel()">Cancel</button>
-              </div>
+            <div id="slot-grid" class="slot-selection">
+              <!-- Slot grid will be populated by JavaScript -->
+            </div>
+            <div class="booking-actions">
+              <button id="confirm-booking" class="confirm-btn">Confirm Booking</button>
+              <button class="cancel-btn" onclick="closeBookingPanel()">Cancel</button>
             </div>
           </div>
         </div>
@@ -109,10 +111,42 @@
       <div class="content-section hidden" id="profile-section">
         <div class="section-header">
           <h2>Your Profile</h2>
-          <button class="edit-profile-btn">Edit Profile</button>
+          <button class="edit-profile-btn" id="edit-profile-btn">Edit Profile</button>
         </div>
         <div id="user-profile" class="profile-container">
           <!-- Profile will be populated by JavaScript -->
+        </div>
+        <div id="edit-profile-form" class="edit-form hidden">
+          <div class="form-header">
+            <h3>Edit Profile</h3>
+            <button class="cancel-edit-btn" id="cancel-edit-btn">Cancel</button>
+          </div>
+          <form id="profile-form">
+            <div class="form-group">
+              <label for="edit-name">Full Name</label>
+              <input type="text" id="edit-name" name="name" required>
+            </div>
+            <div class="form-group">
+              <label for="edit-email">Email</label>
+              <input type="email" id="edit-email" name="email" readonly>
+            </div>
+            <div class="form-group">
+              <label for="edit-phone">Phone Number</label>
+              <input type="tel" id="edit-phone" name="phone">
+            </div>
+            <div class="form-group">
+              <label for="edit-address">Address</label>
+              <textarea id="edit-address" name="address" rows="3"></textarea>
+            </div>
+            <div class="form-group">
+              <label for="edit-vehicle">Vehicle Model</label>
+              <input type="text" id="edit-vehicle" name="vehicle" placeholder="e.g., Tesla Model 3">
+            </div>
+            <div class="form-actions">
+              <button type="submit" class="save-btn">Save Changes</button>
+              <button type="button" class="cancel-btn" id="cancel-form-btn">Cancel</button>
+            </div>
+          </form>
         </div>
       </div>
     </main>
