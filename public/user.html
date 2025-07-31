@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>User Dashboard - EV Point</title>
+  <link rel="stylesheet" href="css/user.css" />
+  <script type="module" src="js/firebase-config.js"></script>
+</head>
+<body>
+  <div class="dashboard">
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <img src="images/logo.png" alt="Logo" class="logo" />
+        <h2 class="company-name">EV Point</h2>
+      </div>
+      <nav class="sidebar-nav">
+        <a href="#" class="active" id="nav-search">
+          <span class="nav-icon">🔍</span>
+          Search Station
+        </a>
+        <a href="#" id="nav-bookings">
+          <span class="nav-icon">📋</span>
+          My Bookings
+        </a>
+        <a href="#" id="nav-profile">
+          <span class="nav-icon">👤</span>
+          Profile
+        </a>
+        <a href="index.html" id="logout">
+          <span class="nav-icon">🚪</span>
+          Logout
+        </a>
+      </nav>
+    </aside>
+
+    <main class="main-content">
+      <div class="header">
+        <h1 id="section-title">Search Station</h1>
+        <div class="user-info">
+          <span id="user-welcome">Welcome!</span>
+        </div>
+      </div>
+
+      <!-- Search Station Section -->
+      <div class="content-section" id="search-section">
+        <div class="search-container">
+          <div class="map-container">
+            <div id="map" class="map-box"></div>
+            <div class="map-legend">
+              <div class="legend-item">
+                <span class="legend-dot green"></span>
+                <span>Open Stations</span>
+              </div>
+              <div class="legend-item">
+                <span class="legend-dot red"></span>
+                <span>Closed Stations</span>
+              </div>
+              <div class="legend-item">
+                <span class="legend-dot blue"></span>
+                <span>Your Location</span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="details-panel">
+            <div id="station-details" class="station-card hidden">
+              <!-- Station details will be populated by JavaScript -->
+            </div>
+            
+            <div id="booking-panel" class="booking-panel hidden">
+              <div class="panel-header">
+                <h3>Book Your Charging Slot</h3>
+                <button class="close-panel" onclick="closeBookingPanel()">×</button>
+              </div>
+              <div id="slot-grid" class="slot-selection">
+                <!-- Slot grid will be populated by JavaScript -->
+              </div>
+              <div class="booking-actions">
+                <button id="confirm-booking" class="confirm-btn">Confirm Booking</button>
+                <button class="cancel-btn" onclick="closeBookingPanel()">Cancel</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- My Bookings Section -->
+      <div class="content-section hidden" id="bookings-section">
+        <div class="section-header">
+          <h2>Your Bookings</h2>
+          <div class="booking-stats">
+            <div class="stat-item">
+              <span class="stat-number" id="total-bookings">0</span>
+              <span class="stat-label">Total Bookings</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-number" id="active-bookings">0</span>
+              <span class="stat-label">Active Today</span>
+            </div>
+          </div>
+        </div>
+        <div id="booking-list" class="booking-container">
+          <!-- Bookings will be populated by JavaScript -->
+        </div>
+      </div>
+
+      <!-- Profile Section -->
+      <div class="content-section hidden" id="profile-section">
+        <div class="section-header">
+          <h2>Your Profile</h2>
+          <button class="edit-profile-btn">Edit Profile</button>
+        </div>
+        <div id="user-profile" class="profile-container">
+          <!-- Profile will be populated by JavaScript -->
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script type="module" src="js/user.js"></script>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDviogCqi_Y7BOXO0k_7o1q4HPtqM4VnXE&libraries=places" async defer></script>
+  
+  <script>
+    // Helper function to close booking panel
+    function closeBookingPanel() {
+      document.getElementById('booking-panel').classList.add('hidden');
+      // Clear any existing route
+      if (window.directionsRenderer) {
+        window.directionsRenderer.setDirections({ routes: [] });
+      }
+    }
+  </script>
+</body>
+</html>

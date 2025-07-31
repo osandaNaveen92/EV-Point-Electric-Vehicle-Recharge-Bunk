@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - EV Point</title>
+    <link rel="stylesheet" href="css/login.css">
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script type="module" src="js/firebase-config.js"></script>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-header">
+            <img src="images/logo.png" alt="EV Logo" class="logo">
+            <h1 class="company-name">EV Point</h1>
+        </div>
+        <form id="login-form" class="login-form">
+            <h2>Login to Your Account</h2>
+            <input type="email" id="email" placeholder="Enter your email" required>
+            <input type="password" id="password" placeholder="Enter your password" required>
+            <button type="submit">Login</button>
+            <p id="error-message"></p>
+        </form>
+
+    </div>
+    <script type="module" src="js/login.js"></script>
+</body>
+</html>
