@@ -9,7 +9,6 @@ EV-Point is a web-based platform designed to provide users with information and 
 - [Getting Started](#getting-started)
 - [Usage](#usage)
 - [Contributing](#contributing)
-- [License](#license)
 - [Contact](#contact)
 
 ---
@@ -61,10 +60,6 @@ To run this project locally:
 ## Contributing
 
 Contributions are welcome! Please fork the repository and submit a pull request with your improvements.
-
-## License
-
-MIT License
 
 ## Contact
 
